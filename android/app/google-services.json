@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "769443273802",
+    "project_id": "uolappchat",
+    "storage_bucket": "uolappchat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:769443273802:android:65a0bb3a62e25fddcc1ab3",
+        "android_client_info": {
+          "package_name": "com.example.uolchatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "769443273802-6u1qg03hcgp70jkd1ka6eec7f191prcl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcuX9x0PCwI_GAcbfDHcZ3BV7FUqOT9OU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "769443273802-6u1qg03hcgp70jkd1ka6eec7f191prcl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
