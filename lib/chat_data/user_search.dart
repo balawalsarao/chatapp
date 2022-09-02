@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SearchUserScreen extends StatefulWidget {
@@ -21,7 +22,6 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
   searchUserData()async{
     await ref.collection('User')
         .where("email",isEqualTo: searchController.text.trim(),)
-        // .where("email",isNotEqualTo: searchController.text.trim())
         .get()
         .then((e) {
           setState(() {
@@ -53,8 +53,8 @@ print('User Data ${userdata}');
                 Container(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.red, // background
-                      onPrimary: Colors.white, // foreground
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.red, // foreground
                     ),
                     onPressed: searchUserData,
 
@@ -66,12 +66,14 @@ print('User Data ${userdata}');
                     ? Container(
                     child: Column(
                       children: [
+                        if(userdata['email'] != FirebaseAuth.instance.currentUser!.email)
                         Card(
                           child: ListTile(
                             title: Text(userdata['name']),
                             subtitle: Text(userdata['email']),
                           ),
                         )
+                        //:Container(child: Text('This is Login User Id'),),
                       ],
                     )
                 )

@@ -10,8 +10,8 @@ class checkUserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     FirebaseAuth auth = FirebaseAuth.instance;
     if(auth.currentUser!=null){
-      // return HomeScreen();
-      return LoginScreen();
+      return HomeScreen();
+      // return LoginScreen();
     }else{
       return LoginScreen();
     }
