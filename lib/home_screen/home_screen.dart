@@ -11,9 +11,43 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver  {
   late double height;
   late double width;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
+    userStatus("online");
+  }
+
+ @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // TODO: implement didChangeAppLifecycleState
+    super.didChangeAppLifecycleState(state);
+    if(state == AppLifecycleState.resumed){
+      // online
+      userStatus("online");
+    }else{
+      //offline
+      userStatus("offline");
+    }
+  }
+
+  /// update user status
+  void userStatus(String status)async{
+    await firebaseFirestore.collection('User').doc(auth.currentUser!.uid).update({
+      "status":status,
+    });
+
+  }
+
+
+
+
 
   FirebaseAuth auth = FirebaseAuth.instance;
   /// step -1
@@ -22,9 +56,9 @@ class _HomeScreenState extends State<HomeScreen> {
   ///Chat Id Function
   String roomChatId(String? user1, String? user2){ // user1= 123 & user2 = 456
     if(user1!.toLowerCase().codeUnits[0] > user2!.toLowerCase().codeUnits[0]){ // 123 > 456
-      return "$user1$user2"; /// 123456
+      return "$user1$user2";
     }else{
-      return "$user2$user1"; /// 456123
+      return "$user2$user1";
     }
   }
   @override
@@ -67,6 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: ListView.builder(
                             itemCount: snapshot.data!.docs.length,
                               itemBuilder: (context,index){
+                              Map<String,dynamic> userData=snapshot.data!.docs[index].data();
                                 return Card(
                                   child: ListTile(
                                     onTap: (){
@@ -74,8 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       String chatId = roomChatId(FirebaseAuth.instance.currentUser!.uid, snapshot.data!.docs[index]['uid']);
                                       Navigator.push(context,MaterialPageRoute(builder: (context) =>
                                           ChatRoomScreen(
-                                            userMap: {"name":snapshot.data!.docs[index]['name'],
-                                                      "email":snapshot.data!.docs[index]['email'],},
+                                            userMap: userData,
                                             chatId: chatId,
                                           )),);
 

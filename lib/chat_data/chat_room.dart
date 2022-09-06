@@ -40,7 +40,25 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     return SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title: Text(widget.userMap['name']),
+            // title: Text(widget.userMap['name']),
+            title: StreamBuilder(
+              stream: firebaseFirestore.collection('User').doc(widget.userMap['uid']).snapshots(),
+              builder: (context,snapShot){
+                if(!snapShot.hasData){
+                  return Center(child: CircularProgressIndicator(),);
+                }else{
+                  return Container(
+                    child: Column(
+                      children: [
+                        Text(widget.userMap['name']),
+                        Text(widget.userMap['status'],style: TextStyle(fontSize: 12.0),),
+                      ],
+                    ),
+                  );
+                }
+              },
+            ),
+
           ),
           body:  StreamBuilder<QuerySnapshot>(
             stream: firebaseFirestore
@@ -57,7 +75,20 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                   child: ListView.builder(
                     itemCount: snapShot.data!.docs.length,
                       itemBuilder: (context,index){
-                    return Text(snapShot.data!.docs[index]['message']);
+                    return Container(
+                      alignment: snapShot.data!.docs[index]['sendby'] == FirebaseAuth.instance.currentUser!.email
+                      ?Alignment.centerRight
+                      :Alignment.centerLeft,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15.0),
+                          color: Colors.blue,
+                        ),
+                        padding: EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+                        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        child: Text(snapShot.data!.docs[index]['message']),
+                      ),
+                    );
                   }
                   ),
                 );

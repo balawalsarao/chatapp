@@ -86,6 +86,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         "uid":FirebaseAuth.instance.currentUser!.uid,
                         "name" : nameController.text.trim(),
                         "email" : emailController.text.trim(),
+                        "status":"",
                       });
                     },
                     child: Text('Register User'),
