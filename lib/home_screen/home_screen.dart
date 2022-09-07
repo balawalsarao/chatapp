@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:uolchatapp/chat_data/chat_room.dart';
 import 'package:uolchatapp/chat_data/user_search.dart';
+import 'package:uolchatapp/creditional/login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -61,6 +63,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver  {
       return "$user2$user1";
     }
   }
+
+  RxInt a=0.obs;  /// get x
+  //  int a=0;  /// flutter
+
+  void add(){
+    a = a+1;
+  }
+
   @override
 
   Widget build(BuildContext context) {
@@ -84,11 +94,28 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver  {
               Text('Welcome ${auth.currentUser!.email}'),
               /// Logout Button
               IconButton(onPressed: (){
-                auth.signOut();
-                Navigator.push(context,MaterialPageRoute(builder: (context) => const SearchUserScreen()),);
-              },
+                Get.defaultDialog(
+                  title: "Alert",
+                  content: Text(
+                      "Are your sure",
+                  ),
+                  actions: [
+                    TextButton(onPressed: (){
+                      auth.signOut();
+                      Get.to(LoginScreen());
+                    }, child: Text("yes")),
+                    TextButton(onPressed: (){
+                      Get.back();
+                    }, child: Text("No")),
+                  ]
+                );
+                },
                   icon: Icon(Icons.logout)),
-              SizedBox(height: 100.0,),
+              SizedBox(height: 10.0,),
+              Obx(() {return Text(a.toString());}),
+              SizedBox(height: 10.0,),
+              IconButton(onPressed: add, icon: Icon(Icons.add)),
+              SizedBox(height: 10.0,),
               Expanded(
                 child: Container(
                   child: StreamBuilder(

@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:uolchatapp/common/text_field_widget.dart';
+import 'package:uolchatapp/constant/color.dart';
 import 'package:uolchatapp/home_screen/home_screen.dart';
 
 import 'register_screen.dart';
@@ -14,6 +17,10 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController=TextEditingController(text: 'admin@gmail.com');
   TextEditingController passwordController=TextEditingController(text: '123456');
+
+  TextWidget _textWidget = TextWidget();
+  ColorWidget _colorWidget = ColorWidget();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -21,27 +28,16 @@ class _LoginScreenState extends State<LoginScreen> {
           body: Column(
             children: [
               /// login Screen heading
-              Text('Login Screen'),
+
+              _textWidget.textWidget('Login Screen', 18.0, FontWeight.bold, _colorWidget.primaryColor),
               /// email container
               Container(
-                child: TextField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Email',
-                  ),
-                ),
+                child: _textWidget.textFieldWidget(emailController, 'email'),
               ),
               /// password container
               Container(
                 margin: EdgeInsets.all(10.0),
-                child: TextField(
-                  controller: passwordController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'password',
-                  ),
-                ),
+                child: _textWidget.textFieldWidget(passwordController, 'password'),
               ),
               /// login button container
               Container(
@@ -56,7 +52,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         password: passwordController.text.trim(),
                     );
                     if(credential.user !=null){
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => const HomeScreen()),);
+                      Get.to(HomeScreen());
+                      // Navigator.push(context,MaterialPageRoute(builder: (context) => const HomeScreen()),);
                     }else{
                       print('Check internet connection first_name');
                     }
